@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Personal>
+    <Employee type="permanent">
+        <Name>Mike</Name>
+        <Age>37</Age>
+        <Id>001</Id>
+    </Employee>
+    <Employee type="contract">
+        <Name>Kitty</Name>
+        <Age>57</Age>
+        <Id>002</Id>
+    </Employee>
+    <Employee type="permanent">
+        <Name>John</Name>
+        <Age>29</Age>
+        <Id>003</Id>
+
+    </Employee>
+    <Employee>
+        <Name>Hello</Name>
+        <Age>78</Age>
+        <Id>004</Id>
+    </Employee>
+</Personal>
