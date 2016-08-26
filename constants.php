@@ -7,6 +7,23 @@ $table="User";
 
 $dbname="phpdata";
 
+
+/*********
+ *Reationship state code
+ *
+ *
+ *
+ *
+ * **/
+$pending=0;
+$accepted=1;
+$declined=2;
+$blocked=3;
+
+
+
+
+
 function getConnection(){
     $conn=mysqli($server,$admin,$dbpasswd,$dbname);
     return $conn;
