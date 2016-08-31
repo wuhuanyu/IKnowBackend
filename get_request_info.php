@@ -11,9 +11,10 @@ if($conn->connect_error){
 }
 
 $user_name=$_POST["name"];
+$user_passwd=$_POST["password"];
 $user_id=getId($user_name,$conn);
 
-$user_id=1;
+//$user_id=1;
 
 $get_record_str="select * from relationshiptest where user_one_id=? or user_two_id=? order by time desc";
 $stmt=$conn->prepare($get_record_str);
