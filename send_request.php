@@ -6,10 +6,21 @@
  *
  * **/
 include "constants.php";
+
+require_once ('push/XingeApp.php');
+$access_id=2100218678;
+$secrete_key="-1";
+
+$message="";
+//echo "in";
 $result_code=-1;
 
 $user_one_name=$_POST["user_one_name"];
 $user_two_name=$_POST["user_two_name"];
+
+
+$sender_name=$user_one_name;
+$receiver_name=$user_two_name;
 $action_name=$user_one_name;
 
 if($user_one_name==$user_two_name){
@@ -34,6 +45,10 @@ return $id;
 
 $user_one_id=getId($user_one_name,$conn);
 $user_two_id=getId($user_two_name,$conn);
+
+//$sender_id=$user_one_id;
+//$receiver_id=$user_two_id;
+
 $action_id=$user_one_id;
 if($user_one_id>$user_two_id){
   //  echo "into exchange";
@@ -60,13 +75,15 @@ if($result->num_rows>0){
         switch($status){
         case $pending:
             //            echo "already pending";
-          //  echo 2;
+        //    echo 2;
             $result_code=2;
+            sendMessage();
             break;
         case $blocked:
            // echo 3;
             $result_code=3;
             updateToPending($user_one_id,$user_two_id,$action_id);
+            sendMessage();
             break;
         case $accepted:
 //            echo 4;
@@ -76,6 +93,7 @@ if($result->num_rows>0){
         case $declined:
             $result_code=5;
             updateToPending($user_one_id,$user_two_id,$action_id);
+            sendMessage();
             break;
 }
 }else{
@@ -93,6 +111,7 @@ if($result->num_rows>0){
     case $declined:
         $result_code=9;
         updateToPending($user_one_id,$user_two_id,$action_id);
+        sendMessage();
         break;
 
 }
@@ -103,7 +122,7 @@ else{
     $insert_str="insert into relationshiptest(user_one_id,user_two_id,status,action_id)values($user_one_id,$user_two_id,0,$action_id)";
     $conn->query($insert_str);
     if($conn->affected_rows>0){
-        echo "successufully";
+     //   echo "successufully";
 
 }
 }
@@ -134,7 +153,19 @@ function updateToAccepted($user_one_id,$user_two_id,$action_id){
 
 }
 
+
+function sendMessage(){
+
+    global $access_id;
+    global $sender_name;
+    global $receiver_name;
+    global $secrete_key;
+  echo  XingeApp::PushAccountAndroid($access_id,$secrete_key,"FriendshipRequest",$sender_name." has send you a FriendshipRequest",$receiver_name);
+
+}
+
 $conn->close();
+
 echo json_encode(array("result_code"=>$result_code));
 
 ?>
