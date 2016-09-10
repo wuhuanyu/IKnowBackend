@@ -1,4 +1,4 @@
-<?php 
+<?php
 function getName($id,$conn){
     $stmt=$conn->prepare("select getName(?) as Name");
     $stmt->bind_param('i',$id);
