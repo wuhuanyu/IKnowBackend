@@ -1,6 +1,8 @@
 <?php
 require_once('constants.php');
 
+$accessId=2100218678;
+$secret_key=-1;
 class DBHelper{
     private $server;
     private $admin;

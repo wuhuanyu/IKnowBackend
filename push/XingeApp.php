@@ -5,23 +5,23 @@
  */
 
 class XingeApp {
-	
+
 	const DEVICE_ALL = 0;
 	const DEVICE_BROWSER = 1;
 	const DEVICE_PC = 2;
 	const DEVICE_ANDROID = 3;
 	const DEVICE_IOS = 4;
 	const DEVICE_WINPHONE = 5;
-	
+
 	const IOSENV_PROD = 1;
 	const IOSENV_DEV = 2;
 
 	const IOS_MIN_ID = 2200000000;
-	
+
 	public function __construct($accessId, $secretKey)
 	{
 		assert(isset($accessId) && isset($secretKey));
-		
+
 		$this->accessId = $accessId;
 		$this->secretKey = $secretKey;
 	}
@@ -179,17 +179,17 @@ class XingeApp {
 		$params['message'] = $message->toJson();
 		$params['timestamp'] = time();
 		$params['environment'] = $environment;
-		
+
 		return $this->callRestful(self::RESTAPI_PUSHSINGLEDEVICE, $params);
 	}
-	
+
 	/**
 	 * 推送消息给单个账户
 	 */
 	public function  PushSingleAccount($deviceType, $account, $message, $environment=0)
 	{
 		$ret = array('ret_code'=>-1);
-		if (!is_int($deviceType) || $deviceType<0 || $deviceType >5) 
+		if (!is_int($deviceType) || $deviceType<0 || $deviceType >5)
 		{
 			$ret['err_msg'] = 'deviceType not valid';
 			return $ret;
@@ -237,7 +237,7 @@ class XingeApp {
 
 		return $this->callRestful(self::RESTAPI_PUSHSINGLEACCOUNT, $params);
 	}
-	
+
 	/**
 	 * 推送消息给多个账户
 	 */
@@ -288,10 +288,10 @@ class XingeApp {
 		$params['message'] = $message->toJson();
 		$params['timestamp'] = time();
 		$params['environment'] = $environment;
-	
+
 		return $this->callRestful(self::RESTAPI_PUSHACCOUNTLIST, $params);
 	}
-	
+
 	/**
 	 * 推送消息给APP所有设备
 	 */
@@ -330,16 +330,16 @@ class XingeApp {
 		$params['timestamp'] = time();
 		$params['environment'] = $environment;
 
-		if (!is_null($message->getLoopInterval()) && $message->getLoopInterval() > 0 
+		if (!is_null($message->getLoopInterval()) && $message->getLoopInterval() > 0
 			&& !is_null($message->getLoopTimes()) && $message->getLoopTimes() > 0) {
 			$params['loop_interval'] = $message->getLoopInterval();
 			$params['loop_times'] = $message->getLoopTimes();
 		}
 		//var_dump($params);
-	
+
 		return $this->callRestful(self::RESTAPI_PUSHALLDEVICE, $params);
 	}
-	
+
 	/**
 	 * 推送消息给指定tags的设备
 	 * 若要推送的tagList只有一项，则tagsOp应为OR
@@ -347,22 +347,22 @@ class XingeApp {
 	public function  PushTags($deviceType, $tagList, $tagsOp, $message, $environment=0)
 	{
 		$ret = array('ret_code'=>-1, 'err_msg'=>'message not valid');
-		if (!is_int($deviceType) || $deviceType<0 || $deviceType >5) 
+		if (!is_int($deviceType) || $deviceType<0 || $deviceType >5)
 		{
 			$ret['err_msg'] = 'deviceType not valid';
 			return $ret;
 		}
-		if (!is_array($tagList) || empty($tagList)) 
+		if (!is_array($tagList) || empty($tagList))
 		{
 			$ret['err_msg'] = 'tagList not valid';
 			return $ret;
 		}
-		if (!is_string($tagsOp) || ($tagsOp!='AND' && $tagsOp!='OR')) 
+		if (!is_string($tagsOp) || ($tagsOp!='AND' && $tagsOp!='OR'))
 		{
 			$ret['err_msg'] = 'tagsOp not valid';
 			return $ret;
 		}
-		
+
 		if (!($message instanceof Message) && !($message instanceof MessageIOS)) return $ret;
 		if (!$this->ValidateMessageType($message))
 		{
@@ -378,7 +378,7 @@ class XingeApp {
 			}
 		}
 		if(!$message->isValid()) return $ret;
-		
+
 		$params = array();
 		$params['access_id'] = $this->accessId;
 		$params['expire_time'] = $message->getExpireTime();
@@ -391,8 +391,8 @@ class XingeApp {
 		$params['message'] = $message->toJson();
 		$params['timestamp'] = time();
 		$params['environment'] = $environment;
-		
-		if (!is_null($message->getLoopInterval()) && $message->getLoopInterval() > 0 
+
+		if (!is_null($message->getLoopInterval()) && $message->getLoopInterval() > 0
 			&& !is_null($message->getLoopTimes()) && $message->getLoopTimes() > 0) {
 			$params['loop_interval'] = $message->getLoopInterval();
 			$params['loop_times'] = $message->getLoopTimes();
@@ -439,10 +439,10 @@ class XingeApp {
 		$params['message'] = $message->toJson();
 		$params['timestamp'] = time();
 		$params['environment'] = $environment;
-	
+
 		return $this->callRestful(self::RESTAPI_CREATEMULTIPUSH, $params);
 	}
-	
+
 	/**
 	 * 按帐号大批量推送
 	 */
@@ -464,7 +464,7 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['push_id'] = $pushId;
 		$params['account_list'] = json_encode($accountList);
-		$params['timestamp'] = time();	
+		$params['timestamp'] = time();
 
 		return $this->callRestful(self::RESTAPI_PUSHACCOUNTLISTMULTIPLE, $params);
 	}
@@ -490,7 +490,7 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['push_id'] = $pushId;
 		$params['device_list'] = json_encode($deviceList);
-		$params['timestamp'] = time();	
+		$params['timestamp'] = time();
 
 		return $this->callRestful(self::RESTAPI_PUSHDEVICELISTMULTIPLE, $params);
 	}
@@ -503,7 +503,7 @@ class XingeApp {
 	{
 		$ret = array('ret_code'=>-1);
 		$idList = array();
-		if (!is_array($pushIdList) || empty($pushIdList)) 
+		if (!is_array($pushIdList) || empty($pushIdList))
 		{
 			$ret['err_msg'] = 'pushIdList not valid';
 			return $ret;
@@ -519,7 +519,7 @@ class XingeApp {
 
 		return $this->callRestful(self::RESTAPI_QUERYPUSHSTATUS, $params);
 	}
-	
+
 	/**
 	 * 查询应用覆盖的设备数
 	 */
@@ -531,7 +531,7 @@ class XingeApp {
 
 		return $this->callRestful(self::RESTAPI_QUERYDEVICECOUNT, $params);
 	}
-	
+
 	/**
 	 * 查询应用标签
 	 */
@@ -548,10 +548,10 @@ class XingeApp {
 		$params['start'] = $start;
 		$params['limit'] = $limit;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_QUERYTAGS, $params);
 	}
-	
+
 	/**
 	 * 查询标签下token数量
 	 */
@@ -567,10 +567,10 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['tag'] = $tag;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_QUERYTAGTOKENNUM, $params);
 	}
-	
+
 	/**
 	 * 查询token的标签
 	 */
@@ -586,10 +586,10 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['device_token'] = $deviceToken;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_QUERYTOKENTAGS, $params);
 	}
-	
+
 	/**
 	 * 取消定时发送
 	 */
@@ -605,25 +605,25 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['push_id'] = $pushId;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_CANCELTIMINGPUSH, $params);
 	}
-	
+
 	//json转换为数组
 	protected function json2Array($json){
 		$json=stripslashes($json);
 		return json_decode($json,true);
 	}
-	
+
 	protected function callRestful($url, $params)
 	{
 		$paramsBase = new ParamsBase($params);
 		$sign = $paramsBase->generateSign(RequestBase::METHOD_POST, $url,  $this->secretKey);
 		$params['sign'] = $sign;
-		
+
 		$requestBase = new RequestBase();
 		$ret = $this->json2Array($requestBase->exec($url, $params, RequestBase::METHOD_POST));
-		
+
 		return $ret;
 	}
 
@@ -637,15 +637,15 @@ class XingeApp {
 	}
 
 	public function InitParams() {
-		
+
 		$params = array();
         $params['access_id'] = $this->accessId;
         $params['timestamp'] = time();
 
         return $params;
-	}    
+	}
 
-	public function BatchSetTag($tagTokenPairs) 
+	public function BatchSetTag($tagTokenPairs)
 	{
 		$ret = array('ret_code' => -1);
 
@@ -665,12 +665,12 @@ class XingeApp {
 	    foreach ($tagTokenPairs as $pair) {
 	    	array_push($tag_token_list, array($pair->tag, $pair->token));
 	    }
-	    $params['tag_token_list'] = json_encode($tag_token_list); 
-	   
-	   	return $this->callRestful(self::RESTAPI_BATCHSETTAG, $params); 
+	    $params['tag_token_list'] = json_encode($tag_token_list);
+
+	   	return $this->callRestful(self::RESTAPI_BATCHSETTAG, $params);
 	}
 
-	public function BatchDelTag($tagTokenPairs) 
+	public function BatchDelTag($tagTokenPairs)
 	{
 		$ret = array('ret_code' => -1);
 
@@ -690,9 +690,9 @@ class XingeApp {
 	    foreach ($tagTokenPairs as $pair) 	{
 	    	array_push($tag_token_list, array($pair->tag, $pair->token));
 	    }
-	    $params['tag_token_list'] = json_encode($tag_token_list); 
-	   
-	   	return $this->callRestful(self::RESTAPI_BATCHDELTAG, $params); 
+	    $params['tag_token_list'] = json_encode($tag_token_list);
+
+	   	return $this->callRestful(self::RESTAPI_BATCHDELTAG, $params);
 	}
 	public function QueryInfoOfToken($deviceToken)
 	{
@@ -706,7 +706,7 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['device_token'] = $deviceToken;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_QUERYINFOOFTOKEN, $params);
 	}
 	public function QueryTokensOfAccount($account)
@@ -721,7 +721,7 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['account'] = $account;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_QUERYTOKENSOFACCOUNT, $params);
 	}
 	public function DeleteTokenOfAccount($account, $deviceToken)
@@ -737,7 +737,7 @@ class XingeApp {
 		$params['account'] = $account;
 		$params['device_token'] = $deviceToken;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_DELETETOKENOFACCOUNT, $params);
 	}
 	public function DeleteAllTokensOfAccount($account)
@@ -752,7 +752,7 @@ class XingeApp {
 		$params['access_id'] = $this->accessId;
 		$params['account'] = $account;
 		$params['timestamp'] = time();
-	
+
 		return $this->callRestful(self::RESTAPI_DELETEALLTOKENSOFACCOUNT, $params);
 	}
 	private function ValidateMessageType($message)
@@ -767,7 +767,7 @@ class XingeApp {
 
 	public $accessId = ''; //应用的接入Id
 	public $secretKey = ''; //应用的skey
-	
+
 	const RESTAPI_PUSHSINGLEDEVICE = 'http://openapi.xg.qq.com/v2/push/single_device';
 	const RESTAPI_PUSHSINGLEACCOUNT = 'http://openapi.xg.qq.com/v2/push/single_account';
 	const RESTAPI_PUSHACCOUNTLIST = 'http://openapi.xg.qq.com/v2/push/account_list';
@@ -788,7 +788,7 @@ class XingeApp {
 	const RESTAPI_QUERYTOKENSOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/get_app_account_tokens';
 	const RESTAPI_DELETETOKENOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/del_app_account_tokens';
 	const RESTAPI_DELETEALLTOKENSOFACCOUNT = 'http://openapi.xg.qq.com/v2/application/del_app_account_all_tokens';
-	
+
 }
 
 class TagTokenPair {
@@ -889,19 +889,19 @@ class Message {
 	{
 		$this->m_raw = $raw;
 	}
-	public function getLoopInterval() 
+	public function getLoopInterval()
 	{
 		return $this->m_loopInterval;
 	}
-	public function setLoopInterval($loopInterval) 
+	public function setLoopInterval($loopInterval)
 	{
 		$this->m_loopInterval = $loopInterval;
 	}
-	public function getLoopTimes() 
+	public function getLoopTimes()
 	{
 		return $this->m_loopTimes;
 	}
-	public function setLoopTimes($loopTimes) 
+	public function setLoopTimes($loopTimes)
 	{
 		$this->m_loopTimes = $loopTimes;
 	}
@@ -933,7 +933,7 @@ class Message {
 			if (!is_null($this->m_style->getSmallIcon())) {
 				$ret['small_icon'] = $this->m_style->getSmallIcon();
 			}
-			
+
 			$ret['action'] = $this->m_action->toJson();
 
 		}
@@ -952,11 +952,11 @@ class Message {
 		if (is_string($this->m_raw) && !empty($this->raw)) return true;
 		if(!isset($this->m_title))
 			$this->m_title = "";
-		else if(!is_string($this->m_title) || empty($this->m_title)) 
+		else if(!is_string($this->m_title) || empty($this->m_title))
 			return false;
 		if(!isset($this->m_content))
 			$this->m_content = "";
-		else if(!is_string($this->m_content) || empty($this->m_content)) 
+		else if(!is_string($this->m_content) || empty($this->m_content))
 			return false;
 		if(!is_int($this->m_type) || $this->m_type<self::TYPE_NOTIFICATION || $this->m_type>self::TYPE_MESSAGE) return false;
 		if(!is_int($this->m_multiPkg) || $this->m_multiPkg<0 || $this->m_multiPkg>1) return false;
@@ -1005,13 +1005,13 @@ class Message {
 		if(isset($this->m_loopInterval)) {
 			if(!(is_int($this->m_loopInterval) && $this->m_loopInterval > 0)) {
 				return false;
-			}	
+			}
 		}
 
 		if(isset($this->m_loopTimes)) {
 			if(!(is_int($this->m_loopTimes) && $this->m_loopTimes > 0)) {
 				return false;
-			}	
+			}
 		}
 
 		if(isset($this->m_loopInterval) && isset($this->m_loopTimes)) {
@@ -1036,7 +1036,7 @@ class Message {
 	private $m_raw;
 	private $m_loopInterval;
 	private $m_loopTimes;
-	
+
 	const TYPE_NOTIFICATION  = 1;
 	const TYPE_MESSAGE = 2;
 	const MAX_LOOP_TASK_DAYS = 15;
@@ -1111,19 +1111,19 @@ class MessageIOS
 	{
 		$this->m_category = $category;
 	}
-	public function getLoopInterval() 
+	public function getLoopInterval()
 	{
 		return $this->m_loopInterval;
 	}
-	public function setLoopInterval($loopInterval) 
+	public function setLoopInterval($loopInterval)
 	{
 		$this->m_loopInterval = $loopInterval;
 	}
-	public function getLoopTimes() 
+	public function getLoopTimes()
 	{
 		return $this->m_loopTimes;
 	}
-	public function setLoopTimes($loopTimes) 
+	public function setLoopTimes($loopTimes)
 	{
 		$this->m_loopTimes = $loopTimes;
 	}
@@ -1141,7 +1141,7 @@ class MessageIOS
 		$ret['aps'] = $aps;
 		return json_encode($ret);
 	}
-	
+
 	public function isValid()
 	{
 		if (isset($this->m_expireTime))
@@ -1153,7 +1153,7 @@ class MessageIOS
 		{
 			$this->m_expireTime = 0;
 		}
-	
+
 		if(isset($this->m_sendTime))
 		{
 			if(strtotime($this->m_sendTime)===false) return false;
@@ -1176,7 +1176,7 @@ class MessageIOS
 			if(!($value instanceof TimeInterval) || !$value->isValid())
 				return false;
 		}
-	
+
 		if(isset($this->m_custom))
 		{
 			if(!is_array($this->m_custom))
@@ -1202,23 +1202,23 @@ class MessageIOS
 		if(isset($this->m_loopInterval)) {
 			if(!(is_int($this->m_loopInterval) && $this->m_loopInterval > 0)) {
 				return false;
-			}	
+			}
 		}
 		if(isset($this->m_loopTimes)) {
 			if(!(is_int($this->m_loopTimes) && $this->m_loopTimes > 0)) {
 				return false;
-			}	
+			}
 		}
 		if(isset($this->m_loopInterval) && isset($this->m_loopTimes)) {
 			if(($this->m_loopTimes - 1) * $this->m_loopInterval + 1 > self::MAX_LOOP_TASK_DAYS) {
 				return false;
 			}
 		}
-	
+
 		return true;
 	}
-	
-	
+
+
 	private $m_expireTime;
 	private $m_sendTime;
 	private $m_acceptTimes;
@@ -1320,13 +1320,13 @@ class ClickAction {
 				$this->m_activity = "";
 				return true;
 			}
-			if (isset($this->m_atyAttrIntentFlag)) 
+			if (isset($this->m_atyAttrIntentFlag))
 			{
 				if (!is_int($this->m_atyAttrIntentFlag)) {
 					return false;
 				}
 			}
-			if (isset($this->m_atyAttrPendingIntentFlag)) 
+			if (isset($this->m_atyAttrPendingIntentFlag))
 			{
 				if (!is_int($this->m_atyAttrPendingIntentFlag)) {
 					return false;
@@ -1353,7 +1353,7 @@ class ClickAction {
 			if (is_string($this->m_intent) && !empty($this->m_intent))
 				return true;
 			return false;
-		}	
+		}
 	}
 
 	private $m_actionType;
@@ -1366,7 +1366,7 @@ class ClickAction {
 	private $m_packageDownloadUrl;
 	private $m_confirmOnPackageDownloadUrl;
 	private $m_packageName;
-	
+
 	const TYPE_ACTIVITY = 1;
 	const TYPE_URL = 2;
 	const TYPE_INTENT = 3;
@@ -1405,7 +1405,7 @@ class Style {
 	{
 		return $this->m_clearable;
 	}
-	
+
 	public function getNId()
 	{
 		return $this->m_nId;
@@ -1448,7 +1448,7 @@ class Style {
 	public function setSmallIcon($smallIcon)
 	{
 		return $this->m_smallIcon = $smallIcon;
-	}	
+	}
 
 	public function getSmallIcon()
 	{

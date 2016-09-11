@@ -88,7 +88,7 @@ function DemoPushSingleDeviceIOS()
 //单个设备下发通知Intent
 //setIntent()的内容需要使用intent.toUri(Intent.URI_INTENT_SCHEME)方法来得到序列化后的Intent(自定义参数也包含在Intent内）
 //终端收到后通过intent.parseUri()来反序列化得到Intent
-function DemoPushSingleDeviceNotificationIntent()
+function DemoPushSingleDeviceNotificatioinIntent()
 {
 	$push = new XingeApp(000, 'secret_key');
 	$mess = new Message();
@@ -136,7 +136,7 @@ function DemoPushAccountList()
 }
 
 //下发IOS账号消息
-function DemoPushSingleAccountIOS()
+function DemoPushSingleAccountIOSi()
 {
 	$push = new XingeApp(000, 'secret_key');
 	$mess = new MessageIOS();
