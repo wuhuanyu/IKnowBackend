@@ -10,8 +10,8 @@ if($conn->connect_error){
 }
 $utility=new getInfoUtility($conn);
 
-$sender_name=$_POST["sender_name"];
-$receiver_name=$_POST["receiver_name"];
+$sender_name=$_POST["sender"];
+$receiver_name=$_POST["receiver"];
 
 //echo "1";
 //echo $sender_name;
@@ -27,19 +27,27 @@ $insert_str="insert into GameInvitation(Sender,Receiver,Room,Status,ActionId)val
 //echo $insert_str;
 $conn->query($insert_str);
 if($conn->affected_rows>0){
-  //  echo "success";
-    var_dump( sendNotification($accessId,$secret_key,$sender_name,$receiver_name));
-   // echo time();
 
-//    XingeApp::PushAccountAndroid(2100218678,"-1",'0','0','mike');
-  //  XingeApp::PushAccountAndroid($accessId,$secret_key,"Hello","this is push ",'mike');
+    $result= sendMesssage($accessId,$secret_key,$result_code,$sender_name,$receiver_name);
+//var_dump($result);
+$result_code=$result["ret_code"];
+
+
 }
 
 
-function test($accessId,$secretKey,$server_name,$receiver_name){
+function sendMesssage($accessId,$secretKey,$result_code,$sender_name,$receiver_name){
+    global $room;
     $push=new XingeApp($accessId,$secretKey);
     $message=new Message();
     $message->setType(Message::TYPE_MESSAGE);
+
+    $message->setTitle("PK Invitation");
+    $message->setContent($sender_name." sent you a PK invitation");
+    $custom=array("result_code"=>$result_code,"room"=>$room,"sender"=>$sender_name);
+    $message->setCustom($custom);
+    $ret=$push->PushSingleAccount(0,$receiver_name,$message);
+    return $ret;
 
 
 }
