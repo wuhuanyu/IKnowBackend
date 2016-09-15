@@ -25,8 +25,8 @@ $action_name=$user_one_name;
 
 if($user_one_name==$user_two_name){
 
-   // die("two name the same");
-    $result_code=-1;
+    die("two name the same");
+    //$result_code=-1;
 }
 $conn=new mysqli($server,$admin,$dbpasswd,$dbname);
 if($conn->connect_error){
