@@ -19,7 +19,7 @@ $receiver_name=$_POST["receiver"];
 $sender_id=$utility->getId($sender_name);
 $receiver_id=$utility->getId($receiver_name);
 
-$time=time();
+$time=microtime(get_as_float);
 $room=md5($time.$sender_name.$receiver_name);
 //echo $sender_id;
 //echo $receiver_id;

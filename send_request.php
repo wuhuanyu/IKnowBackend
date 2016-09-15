@@ -13,7 +13,7 @@ $secrete_key="-1";
 
 $message="";
 //echo "in";
-$result_code=-1;
+//$result_code="";
 
 $user_one_name=$_POST["user_one_name"];
 $user_two_name=$_POST["user_two_name"];
@@ -25,7 +25,8 @@ $action_name=$user_one_name;
 
 if($user_one_name==$user_two_name){
 
-    die("two name the same");
+   // die("two name the same");
+    $result_code=-1;
 }
 $conn=new mysqli($server,$admin,$dbpasswd,$dbname);
 if($conn->connect_error){
@@ -122,6 +123,7 @@ else{
     $insert_str="insert into relationshiptest(user_one_id,user_two_id,status,action_id)values($user_one_id,$user_two_id,0,$action_id)";
     $conn->query($insert_str);
     if($conn->affected_rows>0){
+        $result_code=1;
      //   echo "successufully";
 
 }
@@ -142,9 +144,9 @@ function updateToAccepted($user_one_id,$user_two_id,$action_id){
     global $conn;
     // global $pending;
     global $accepted;
-    echo $user_one_id;
-    echo $user_two_id;
-    echo $action_id;
+  //  echo $user_one_id;
+   // echo $user_two_id;
+   // echo $action_id;
   //  echo
     $update_str="update relationshiptest set status=?,action_id=? where user_one_id=? and user_two_id=?";
     $stmt=$conn->prepare($update_str);
@@ -160,12 +162,18 @@ function sendMessage(){
     global $sender_name;
     global $receiver_name;
     global $secrete_key;
-  echo  XingeApp::PushAccountAndroid($access_id,$secrete_key,"FriendshipRequest",$sender_name." has send you a FriendshipRequest",$receiver_name);
+   XingeApp::PushAccountAndroid($access_id,$secrete_key,"FriendshipRequest",$sender_name." has send you a FriendshipRequest",$receiver_name);
 
 }
 
 $conn->close();
+$result=array();
+array_push($result,array("result_code"=>$result_code));
 
-echo json_encode(array("result_code"=>$result_code));
+//echo json_encode(array("result"=>$result));
+
+//echo $result_code;
+//echo json_encode(array("result_code"=>$result_code));
+echo $result_code;
 
 ?>

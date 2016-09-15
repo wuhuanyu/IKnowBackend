@@ -3,12 +3,13 @@
 require_once('iknow_backend_api.php');
 require_once('constants.php');
 
-$conn=new mysqli($server,$admin,$dbpasswd,$dbname);
+//$conn=new mysqli($server,$admin,$dbpasswd,$dbname);
 
-$utility=new getInfoUtility($conn);
-echo $utility->getId('mike');
-echo $utility->getName(1);
+//$utility=new getInfoUtility($conn);
+//echo $utility->getId('mike');
+//echo $utility->getName(1);
 
+echo microtime(get_as_float);
 
 
 

@@ -37,7 +37,7 @@ if($result->num_rows>0){
         array_push($user,array("name"=>$row["Name"],"login"=>$row["Login"]));
 }
 }
-else echo "No record";
+//else echo "No record";
 
 
 echo json_encode(array("data"=>$user));

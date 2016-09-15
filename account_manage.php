@@ -24,14 +24,14 @@ case "sign_up":
         $info="Name exits already";
 }else{
     //   $insert_str="insert into Use"
-    $insert_str="insert into User (Name,Password)values(?,?)";
+    $insert_str="insert into usertest (Name,Password)values(?,?)";
     $stmt=$conn->prepare($insert_str);
     $stmt->bind_param("ss",$username,$password);
     $stmt->execute();
     $stmt->close();
 
-    global $info;
-    global $result_bool;
+  //  global $info;
+   // global $result_bool;
 $info= "Account create successfully";
 $result_bool=true;
 
@@ -40,12 +40,20 @@ $result_bool=true;
 
 //echo json_encode($array_to_send);
 
-}break;
+}
+
+
+
+
+break;
 case "login":
    // echo "into login";
     login($username,$password);
 break;
 case "logout":
+//    if(!isNameExits($name)){
+//        $info="Name not exits";
+//}
     logout($username,$password);
     break;
 
@@ -54,10 +62,11 @@ case "logout":
 }
 
 function logout($name,$password){
+
     global $conn;
     global $result_bool;
     global $info;
-    $search_str="select * from User where Name='$name' and Password='$password'";
+   $search_str="select * from usertest where Name='$name' and Password='$password'";
 
  //   echo "<br>";
   //  echo $search_str;
@@ -73,7 +82,7 @@ function logout($name,$password){
 
 }
 else {
-    $update_str="update User set Login=0 where Name='$name'";
+    $update_str="update usertest set Login=0 where Name='$name'";
    // echo $update_str;
     $conn->query($update_str);
 
@@ -97,19 +106,19 @@ function login($name,$password){
         $info= "Name not exits please check your name";
 }
 else {
-    $search_str="select * from User where Name='$name' and Password='$password'";
+    $search_str="select * from usertest where Name='$name' and Password='$password'";
     $result=$conn->query($search_str);
     if($result->num_rows==0){
           $info=   "Password wrong!";
 
 }
 else{
-    $search_str="select * from User where Name='$name' and Password='$password' and Login=0";
+    $search_str="select * from usertest where Name='$name' and Password='$password' and Login=0";
     $result=$conn->query($search_str);
     if($result->num_rows==0){
        $info="You have login somewhere already";
 }else{
-    $update_str="Update User set Login=1 where Name='$name'";
+    $update_str="Update usertest set Login=1 where Name='$name'";
     $conn->query($update_str);
    $info= "Login Successfully";
     $result_bool=true;
@@ -131,7 +140,7 @@ else{
 
 function isNameExits($name){
     global $conn;
-    $search_str="select * from User where Name=?";
+    $search_str="select * from usertest where Name=?";
     $stmt=$conn->prepare($search_str);
     $stmt->bind_param('s',$name);
     $stmt->execute();
