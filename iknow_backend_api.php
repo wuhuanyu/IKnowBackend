@@ -51,4 +51,29 @@ class getInfoUtility{
 
 
 
+class Question{
+    private $content;
+    private $ans_a;
+    private $ans_b;
+    private $ans_c;
+    private $ans_d;
+    private $right_index;
+
+    public function __construct($co,$a,$b,$c,$d,$r){
+    $this->content=$co;
+    $this->ans_a=$a;
+    $this->ans_b=$b;
+    $this->ans_c=$c;
+    $this->ans_d=$d;
+    $this->right_index=$r;
+}
+
+    public function getAns_a(){return $this->ans_a;}
+    public function getAns_b(){return $this->ans_b;}
+    public function getAns_c(){return $this->ans_c;}
+    public function getAns_d(){return $this->ans_d;}
+    public function getContent(){return $this->content;}
+    public function getRightIndex(){return $this->right_index;}
+
+}
 ?>

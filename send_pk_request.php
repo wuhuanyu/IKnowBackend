@@ -44,7 +44,7 @@ function sendMesssage($accessId,$secretKey,$result_code,$sender_name,$receiver_n
 
     $message->setTitle("PK Invitation");
     $message->setContent($sender_name." sent you a PK invitation");
-    $custom=array("result_code"=>$result_code,"room"=>$room,"sender"=>$sender_name);
+    $custom=array("target_code"=>0,"result_code"=>$result_code,"room"=>$room,"sender"=>$sender_name);
     $message->setCustom($custom);
     $ret=$push->PushSingleAccount(0,$receiver_name,$message);
     return $ret;
