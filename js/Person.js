@@ -105,3 +105,88 @@ student.prototype.toString=function(){
 }
 
 console.log(stu_mike.toString());
+
+
+console.log("----------------------------");
+
+
+functionCounter.counter=0;
+
+function functionCounter(){
+  return functionCounter.counter++;
+}
+
+console.log(functionCounter());
+console.log(functionCounter());
+
+function counter(){
+    var n=0;
+    return {
+        count:function(){return n++;},
+        reset:function(){return n=0;}
+    };
+};
+
+
+var c=counter();
+var d=counter();
+
+console.log(c.count());
+console.log(d.reset());
+console.log(c.count());
+
+
+function newCounter(n){
+  //  return {
+  //      get:function(){return n++;},
+  //      set:function(m){
+  //          if(m>0)n=m;
+  //          else
+  //              throw Error("error");
+  //      }
+  //  }
+    return {
+        get count(){return n++;},
+        set count(m){
+            n=m;
+        }
+    }
+}
+
+
+var newC=newCounter(10);
+//console.log(newC.set(100));
+//console.log(newC.get());
+//
+//console.log(newC.)
+
+console.log(newC.count);
+
+newC.count=100;
+console.log(newC.count);
+
+
+
+var o={
+    a:0,
+    b:1
+};
+
+Object.defineProperty(o,"c",{
+    get:function(){return this.a+1;}
+});
+
+
+console.log(o.c);
+
+
+var arr1=[
+    "java",
+    "cpp",
+    "c#",
+
+];
+
+
+var newarr1=arr1.map(s=>s.length);
+console.log(newarr1);

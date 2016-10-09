@@ -47,6 +47,20 @@ class getInfoUtility{
         }
         return $id;
     }
+
+
+
+    public function getIsLogin($id){
+        $result=$this->conn-query("select Login from usertest where id='$id'");
+        if($result->num_rows>0){
+            $row=$result->fetch_assoc();
+            $isLogin=$row["Login"];
+            if($isLogin==1)
+                return true;
+            else return false;
+        }
+        else return false;
+    }
     }
 
 

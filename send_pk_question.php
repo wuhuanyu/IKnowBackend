@@ -4,7 +4,7 @@ require_once('iknow_backend_api.php');
 require_once('constants.php');
 
 
-$conn=new mysqli($server,$admin,$dbpasswd,$dbname);
+$conn=new mysqli($server,$admin,$dpasswd,$dbname);
 if($conn->connect_error){
     die("Connection failed");
 }
@@ -59,13 +59,14 @@ function sendQuestionToAndroid($accessId,$secretKey,$receiver,$question){
 }
 
 function check($conn,$player_one_id,$player_two_id,$room){
+    global $utility;
+    if(!$utility->getIsLogin($player_one_id)||!$utility->getIsLogin($player_two_id))
+        return false;
     $check_str="select count(*) from GameInvitation where Room='$room' and (Sender=$player_one_id or Sender=$player_two_id) and (Receiver=$player_one_id or Receiver=$player_two_id) and Status=1";
-   // echo $check_str;
     $result=$conn->query($check_str);
     if($result->num_rows>0){
         $row=$result->fetch_assoc();
         $count=$row["count(*)"];
-        //echo $count;
         if($count==1)
             return true;
         else return false;
