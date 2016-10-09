@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Created by PhpStorm.
  * User: stack
@@ -13,6 +14,7 @@ class imageUploadHelper
     private $target_file;
     private $uploadOk=0;
     private $imageFileType;
+
     public function __construct($file)
     {
         $this->file=$file;
@@ -24,6 +26,7 @@ class imageUploadHelper
         echo $this->target_file;
         $this->imageFileType= pathinfo($this->target_file,PATHINFO_EXTENSION);
     }
+
 
 
     public function uplaod(){
